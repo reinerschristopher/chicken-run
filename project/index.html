@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🐔 CHICKEN RUN — Cambridge, May 7th</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #FFF8E1;
+      --yellow:  #F9C74F;
+      --orange:  #F4812A;
+      --red:     #E63946;
+      --brown:   #3D1F08;
+      --mid:     #8B5E3C;
+      --green:   #5A8A3C;
+      --light:   #FFFDF5;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--brown);
+      overflow-x: hidden;
+    }
+
+    /* ── FEATHERS ── */
+    .feathers-bg {
+      position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: hidden;
+    }
+    .feather {
+      position: absolute;
+      top: -80px;
+      font-size: 1.6rem;
+      opacity: 0.25;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.7; }
+      50%  { transform: translateY(50vh) rotate(200deg) translateX(40px); opacity: 0.6; }
+      100% { transform: translateY(115vh) rotate(380deg) translateX(-30px); opacity: 0; }
+    }
+
+    /* ── LAYOUT ── */
+    section { position: relative; z-index: 1; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      background: var(--yellow);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 3rem 1.5rem 2rem;
+      overflow: hidden;
+    }
+    .hero-ground {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 80px; background: var(--green); border-radius: 50% 50% 0 0 / 30px 30px 0 0;
+    }
+    .hero-ground::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(90deg, transparent 0px, transparent 18px, rgba(0,0,0,.07) 18px, rgba(0,0,0,.07) 20px);
+      border-radius: inherit;
+    }
+    .hero-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(3rem, 15vw, 6rem);
+      color: var(--brown);
+      line-height: 1;
+      letter-spacing: -1px;
+      text-shadow: 4px 4px 0 rgba(0,0,0,.12);
+    }
+    .hero-sub {
+      font-size: clamp(.9rem, 4vw, 1.2rem);
+      font-weight: 700;
+      color: var(--brown);
+      margin-top: .5rem;
+      opacity: .75;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .hero-tagline {
+      font-size: clamp(1rem, 4.5vw, 1.4rem);
+      font-style: italic;
+      font-weight: 600;
+      color: var(--brown);
+      margin-top: 1rem;
+      max-width: 320px;
+    }
+    .hero-chickens {
+      display: flex; gap: 12px; margin-top: 2rem; align-items: flex-end;
+    }
+    .hero-chickens svg { animation: bop .8s ease-in-out infinite alternate; }
+    .hero-chickens svg:nth-child(2) { animation-delay: .15s; transform-origin: bottom center; }
+    .hero-chickens svg:nth-child(3) { animation-delay: .3s; }
+    @keyframes bop {
+      from { transform: translateY(0) rotate(-3deg); }
+      to   { transform: translateY(-8px) rotate(3deg); }
+    }
+    .scroll-hint {
+      position: absolute; bottom: 90px; left: 50%; transform: translateX(-50%);
+      font-size: .85rem; font-weight: 700; color: var(--brown); opacity: .6;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .scroll-hint span { animation: bounce 1.2s ease-in-out infinite; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+    .badge-deadline {
+      background: var(--red); color: #fff;
+      font-family: 'Fredoka One', cursive;
+      font-size: .85rem; letter-spacing: .03em;
+      padding: .35rem .9rem; border-radius: 999px;
+      margin-top: 1.2rem;
+      box-shadow: 0 3px 0 rgba(0,0,0,.2);
+      animation: wiggle 2s ease-in-out infinite;
+    }
+    @keyframes wiggle {
+      0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)}
+    }
+    @keyframes runAcross {
+      0%   { transform: translateX(-60px); }
+      100% { transform: translateX(calc(100vw + 60px)); }
+    }
+
+    /* ── COUNTDOWN ── */
+    .countdown {
+      display: flex; gap: .6rem; margin-top: 1.4rem; justify-content: center;
+    }
+    .cd-box {
+      background: var(--brown); color: var(--yellow);
+      border-radius: 12px; padding: .5rem .7rem;
+      min-width: 58px; text-align: center;
+      box-shadow: 0 4px 0 rgba(0,0,0,.25);
+    }
+    .cd-num {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.8rem; line-height: 1; display: block;
+    }
+    .cd-label {
+      font-size: .6rem; font-weight: 800; letter-spacing: .1em;
+      text-transform: uppercase; opacity: .7; display: block; margin-top: 2px;
+    }
+    .cd-expired {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1rem; color: var(--red);
+      background: var(--brown); padding: .5rem 1.2rem;
+      border-radius: 12px; margin-top: 1.4rem;
+    }
+
+    /* ── WANTED POSTER ── */
+    .wanted-section {
+      background: var(--cream);
+      padding: 3rem 1.5rem 4rem;
+      display: flex; justify-content: center;
+    }
+    .wanted-poster {
+      background: #F5EACC;
+      border: 3px solid #8B5E2A;
+      border-radius: 4px;
+      padding: 2rem 1.5rem 1.8rem;
+      max-width: 400px; width: 100%;
+      position: relative;
+      box-shadow: 4px 6px 0 rgba(0,0,0,.15), inset 0 0 60px rgba(139,94,42,.08);
+      transform: rotate(-0.6deg);
+    }
+    .wanted-poster::before {
+      content: '';
+      position: absolute; inset: 6px;
+      border: 1.5px dashed rgba(139,94,42,.3);
+      border-radius: 2px; pointer-events: none;
+    }
+    .wanted-header {
+      font-family: 'Special Elite', cursive;
+      font-size: 2.8rem; letter-spacing: .2em;
+      color: #3D1F08; text-align: center;
+      line-height: 1; margin-bottom: .2rem;
+      text-shadow: 2px 2px 0 rgba(139,94,42,.2);
+    }
+    .wanted-subheader {
+      font-family: 'Special Elite', cursive;
+      font-size: .75rem; letter-spacing: .3em;
+      color: #6B3E1A; text-align: center;
+      margin-bottom: 1.2rem; opacity: .8;
+    }
+    .wanted-mugshots {
+      display: flex; gap: .8rem; justify-content: center;
+      margin-bottom: 1.2rem;
+    }
+    .mugshot {
+      flex: 1; text-align: center;
+    }
+    .mugshot-frame {
+      background: #E8D9B0;
+      border: 2px solid #8B5E2A;
+      border-radius: 4px;
+      padding: .6rem .4rem .4rem;
+      margin-bottom: .4rem;
+      display: flex; flex-direction: column; align-items: center;
+      gap: .3rem;
+    }
+    .mugshot-name {
+      font-family: 'Special Elite', cursive;
+      font-size: .7rem; color: #3D1F08;
+      letter-spacing: .05em;
+    }
+    .wanted-desc {
+      font-family: 'Special Elite', cursive;
+      font-size: .85rem; line-height: 1.65;
+      color: #4A2C0A; text-align: center;
+      margin-bottom: 1rem;
+    }
+    .wanted-reward {
+      background: #3D1F08; color: var(--yellow);
+      font-family: 'Special Elite', cursive;
+      font-size: 1rem; letter-spacing: .1em;
+      text-align: center; padding: .6rem;
+      border-radius: 3px;
+    }
+    .stamp-overlay {
+      position: absolute; top: 1.5rem; right: 1rem;
+      font-family: 'Special Elite', cursive;
+      font-size: 1rem; letter-spacing: .12em;
+      color: var(--red); border: 3px solid var(--red);
+      border-radius: 4px; padding: .2rem .5rem;
+      transform: rotate(15deg);
+      opacity: .75;
+      text-transform: uppercase;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    /* ── STAMP TITLES ── */
+    .stamp-title {
+      font-family: 'Special Elite', cursive;
+      font-size: clamp(1.6rem, 7vw, 2.2rem);
+      letter-spacing: .06em;
+      display: inline-block;
+    }
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── SECTION SHARED ── */
+    .sec {
+      padding: 4rem 1.5rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .sec-label {
+      font-family: 'Fredoka One', cursive;
+      font-size: .75rem; letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: .5rem;
+    }
+    .sec-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.8rem, 8vw, 2.6rem);
+      line-height: 1.1;
+      color: var(--brown);
+      margin-bottom: .75rem;
+    }
+    .sec-body {
+      margin-top: 1.2rem;
+      font-size: 1.05rem; line-height: 1.75;
+      color: #5a3a1a;
+    }
+    .sec-body strong { color: var(--brown); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%; height: 60px; overflow: hidden;
+      position: relative; z-index: 1;
+    }
+    .divider svg { display: block; width: 100%; height: 100%; }
+
+    /* ── HOW IT WORKS ── */
+    .steps-section {
+      background: var(--brown);
+      padding: 4rem 1.5rem;
+    }
+    .steps-inner {
+      max-width: 480px; margin: 0 auto;
+    }
+    .steps-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.8rem, 8vw, 2.6rem);
+      color: var(--yellow);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .step-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 1.3rem 1.4rem;
+      margin-bottom: 1rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      box-shadow: 0 4px 0 rgba(0,0,0,.25);
+      transform: translateX(-60px); opacity: 0;
+      transition: transform .5s ease, opacity .5s ease;
+    }
+    .step-card.visible { transform: none; opacity: 1; }
+    .step-card:nth-child(even) { transform: translateX(60px); }
+    .step-card:nth-child(even).visible { transform: none; }
+    .step-num {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.2rem; color: var(--yellow); line-height: 1;
+      flex-shrink: 0; width: 2rem; text-align: center;
+    }
+    .step-text strong {
+      font-size: 1rem; font-weight: 800; display: block; margin-bottom: .2rem; color: var(--brown);
+    }
+    .step-text p { font-size: .9rem; line-height: 1.55; color: #5a3a1a; }
+
+    /* ── RULES ── */
+    .rules-section { background: var(--orange); padding: 4rem 1.5rem; }
+    .rules-inner { max-width: 480px; margin: 0 auto; }
+    .rules-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.8rem, 8vw, 2.6rem);
+      color: #fff; margin-bottom: 1.5rem; text-align: center;
+    }
+    .rule-row {
+      background: rgba(255,255,255,.18);
+      border: 2px solid rgba(255,255,255,.35);
+      border-radius: 16px; padding: 1rem 1.2rem;
+      margin-bottom: .75rem;
+      color: #fff; font-size: .95rem; line-height: 1.5;
+      display: flex; gap: .8rem; align-items: center;
+    }
+    .rule-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .rule-row strong { display: block; font-weight: 800; font-size: 1rem; }
+
+
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--cream); padding: 4rem 1.5rem 5rem;
+      text-align: center;
+    }
+    .cta-inner { max-width: 400px; margin: 0 auto; }
+    .cta-chicken { margin: 0 auto 1.5rem; display: block; }
+    .cta-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 9vw, 3rem);
+      color: var(--brown); margin-bottom: .5rem;
+    }
+    .cta-sub {
+      font-size: 1rem; color: #5a3a1a; margin-bottom: 2rem; line-height: 1.55;
+    }
+    .btn {
+      display: block; width: 100%;
+      padding: 1.1rem 1.5rem;
+      border-radius: 18px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.3rem;
+      letter-spacing: .02em;
+      text-decoration: none;
+      border: none; cursor: pointer;
+      transition: transform .1s, box-shadow .1s;
+      margin-bottom: 1rem;
+    }
+    .btn:active { transform: translateY(3px); box-shadow: none !important; }
+    .btn-pay {
+      background: var(--green); color: #fff;
+      box-shadow: 0 5px 0 #3a6128;
+    }
+    .btn-cal {
+      background: var(--yellow); color: var(--brown);
+      box-shadow: 0 5px 0 #c9982a;
+    }
+    .btn-paid {
+      background: var(--brown); color: var(--yellow);
+      box-shadow: 0 5px 0 #1a0a00;
+      font-size: 1rem; padding: .75rem;
+      margin-top: -.3rem;
+    }
+
+    /* locked overlay */
+    .locked-overlay {
+      position: relative;
+    }
+    .lock-gate {
+      position: absolute; inset: 0; z-index: 10;
+      background: rgba(61,31,8,.6);
+      backdrop-filter: blur(6px);
+      border-radius: 18px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: .5rem; color: #fff;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.3rem;
+      transition: opacity .5s;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .lock-gate.unlocked { opacity: 0; pointer-events: none; }
+    .lock-icon { font-size: 2.5rem; animation: wiggle 2s infinite; }
+    .locked-content {
+      display: flex; flex-direction: column; gap: 1rem;
+      padding: 1.5rem; background: rgba(0,0,0,.04); border-radius: 18px;
+    }
+    .cal-hidden { opacity: .3; pointer-events: none; filter: blur(3px); transition: all .5s; }
+    .cal-hidden.shown { opacity: 1; pointer-events: auto; filter: none; }
+    .confetti-line { font-size: 1.1rem; margin-top: .3rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--brown); color: rgba(255,255,255,.5);
+      text-align: center; padding: 1.5rem;
+      font-size: .8rem;
+    }
+    footer strong { color: var(--yellow); }
+  </style>
+</head>
+<body>
+
+
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="feathers-bg" id="feathers"></div>
+  <div class="hero-title">CHICKEN RUN</div>
+  <div class="hero-sub">Cambridge · May 7th, 2026</div>
+
+  <div class="hero-chickens">
+    <!-- Chicken 1 — white -->
+    <svg width="70" height="80" viewBox="0 0 70 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="35" cy="52" rx="24" ry="22" fill="#FFFFFF" stroke="#d4a72a" stroke-width="1"/>
+      <circle cx="35" cy="26" r="14" fill="#FFFFFF" stroke="#d4a72a" stroke-width="1"/>
+      <path d="M29 16 C31 8 39 8 41 16" fill="#E63946"/>
+      <path d="M41 22 L50 18 L48 25 Z" fill="#F4812A"/>
+      <circle cx="30" cy="24" r="2.5" fill="#3D1F08"/>
+      <circle cx="30" cy="23" r="1" fill="#fff"/>
+      <path d="M22 60 L18 75 M48 60 L52 75" stroke="#F4812A" stroke-width="3" stroke-linecap="round"/>
+      <path d="M15 74 L21 74 L18 70Z M49 74 L55 74 L52 70Z" fill="#F4812A"/>
+      <path d="M13 50 C5 45 8 35 14 38 C10 44 16 50 22 47" fill="#FFFFFF" stroke="#d4a72a" stroke-width="1"/>
+    </svg>
+    <!-- Chicken 2 (bigger, "the chaser") -->
+    <svg width="90" height="100" viewBox="0 0 90 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="45" cy="65" rx="30" ry="28" fill="#F4812A"/>
+      <circle cx="45" cy="32" r="18" fill="#F4812A"/>
+      <path d="M36 18 C39 6 51 6 54 18" fill="#E63946"/>
+      <path d="M54 27 L68 21 L65 31 Z" fill="#F9C74F"/>
+      <circle cx="39" cy="29" r="3.2" fill="#3D1F08"/>
+      <circle cx="39" cy="27.5" r="1.2" fill="#fff"/>
+      <path d="M28 76 L22 96 M62 76 L68 96" stroke="#F4812A" stroke-width="4" stroke-linecap="round"/>
+      <path d="M18 95 L26 95 L22 89Z M64 95 L72 95 L68 89Z" fill="#F9C74F"/>
+      <path d="M16 62 C4 55 8 42 16 46 C11 54 19 62 28 58" fill="#F4812A" stroke="#c9621a" stroke-width="1"/>
+    </svg>
+    <!-- Chicken 3 — rust brown -->
+    <svg width="70" height="80" viewBox="0 0 70 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="35" cy="52" rx="24" ry="22" fill="#8B3A0F"/>
+      <circle cx="35" cy="26" r="14" fill="#8B3A0F"/>
+      <path d="M29 16 C31 8 39 8 41 16" fill="#E63946"/>
+      <path d="M41 22 L50 18 L48 25 Z" fill="#F9C74F"/>
+      <circle cx="40" cy="24" r="2.5" fill="#fff"/>
+      <circle cx="40" cy="23" r="1" fill="#3D1F08"/>
+      <path d="M22 60 L18 75 M48 60 L52 75" stroke="#F9C74F" stroke-width="3" stroke-linecap="round"/>
+      <path d="M15 74 L21 74 L18 70Z M49 74 L55 74 L52 70Z" fill="#F9C74F"/>
+      <path d="M57 50 C65 45 62 35 56 38 C60 44 54 50 48 47" fill="#8B3A0F" stroke="#5a2508" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <p class="hero-tagline">"Find us before we drink all your money."</p>
+
+  <div id="countdown" class="countdown"></div>
+  <div id="cd-expired" class="cd-expired" style="display:none;">⚠️ Deadline passed — no late entries!</div>
+  <div class="badge-deadline">Pay by May 3rd or you're not playing</div>
+
+  <div class="scroll-hint">
+    <span>scroll to learn more</span>
+    <span>↓</span>
+  </div>
+  <div class="hero-ground"></div>
+</section>
+
+<!-- ═══════════════ WANTED POSTER ═══════════════ -->
+<section class="wanted-section">
+  <div class="wanted-poster reveal">
+    <div class="stamp-overlay">ARMED<br>&amp; THIRSTY</div>
+    <div class="wanted-header">WANTED</div>
+    <div class="wanted-subheader">— dead or alive —</div>
+
+    <div class="wanted-mugshots">
+      <div class="mugshot">
+        <div class="mugshot-frame">
+          <!-- Petra — white chicken -->
+          <svg width="54" height="62" viewBox="0 0 70 80" fill="none"><ellipse cx="35" cy="52" rx="24" ry="22" fill="#fff" stroke="#8B5E2A" stroke-width="2"/><circle cx="35" cy="26" r="14" fill="#fff" stroke="#8B5E2A" stroke-width="2"/><path d="M29 16 C31 8 39 8 41 16" fill="#E63946"/><path d="M41 22 L50 18 L48 25 Z" fill="#F4812A"/><circle cx="40" cy="24" r="2.5" fill="#3D1F08"/><circle cx="40" cy="23" r="1" fill="#fff"/><path d="M22 60 L18 75 M48 60 L52 75" stroke="#8B5E2A" stroke-width="3" stroke-linecap="round"/><path d="M15 74 L21 74 L18 70Z M49 74 L55 74 L52 70Z" fill="#8B5E2A"/></svg>
+          <div class="mugshot-name">PETRA</div>
+        </div>
+      </div>
+      <div class="mugshot">
+        <div class="mugshot-frame">
+          <!-- Chris — orange chicken -->
+          <svg width="54" height="62" viewBox="0 0 90 100" fill="none"><ellipse cx="45" cy="65" rx="30" ry="28" fill="#F4812A"/><circle cx="45" cy="32" r="18" fill="#F4812A"/><path d="M36 18 C39 6 51 6 54 18" fill="#E63946"/><path d="M54 27 L68 21 L65 31 Z" fill="#F9C74F"/><circle cx="39" cy="29" r="3.2" fill="#3D1F08"/><circle cx="39" cy="27.5" r="1.2" fill="#fff"/><path d="M28 76 L22 96 M62 76 L68 96" stroke="#8B5E2A" stroke-width="4" stroke-linecap="round"/><path d="M18 95 L26 95 L22 89Z M64 95 L72 95 L68 89Z" fill="#8B5E2A"/></svg>
+          <div class="mugshot-name">CHRIS</div>
+        </div>
+      </div>
+      <div class="mugshot">
+        <div class="mugshot-frame">
+          <!-- Amelie — brown chicken -->
+          <svg width="54" height="62" viewBox="0 0 70 80" fill="none"><ellipse cx="35" cy="52" rx="24" ry="22" fill="#8B3A0F"/><circle cx="35" cy="26" r="14" fill="#8B3A0F"/><path d="M29 16 C31 8 39 8 41 16" fill="#E63946"/><path d="M41 22 L50 18 L48 25 Z" fill="#F9C74F"/><circle cx="40" cy="24" r="2.5" fill="#fff"/><circle cx="40" cy="23" r="1" fill="#3D1F08"/><path d="M22 60 L18 75 M48 60 L52 75" stroke="#F9C74F" stroke-width="3" stroke-linecap="round"/><path d="M15 74 L21 74 L18 70Z M49 74 L55 74 L52 70Z" fill="#F9C74F"/></svg>
+          <div class="mugshot-name">AMELIE</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="wanted-desc">
+      Last seen heading to a Cambridge bar<br>
+      with <em>your</em> money. Approach with caution.<br>
+      They will drink relentlessly.
+    </p>
+    <div class="wanted-reward">REWARD: YOUR OWN BAR TAB BACK</div>
+  </div>
+</section>
+
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section class="steps-section">
+  <div class="steps-inner">
+    <div class="steps-title reveal"><span class="stamp-title">How it works</span></div>
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <strong>Pay £12 before May 3rd</strong>
+        <p>Transfer your stake to the chickens. This serves as our fuel. Every pound goes straight to the chickens' bar tab.</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <strong>Wait for the drop</strong>
+        <p>On May 7th, at <strong>6 PM</strong> you'll receive a message: <em>"DAS CHICKEN IST LOS."</em> The chickens are loose. Drop everything, find your team, and start hunting.</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <strong>Hunt in teams of 4–5 </strong>
+        <p>You will be divided into teams with whom you will go from bar to bar across Cambridge.<br>Every wrong bar you enter = your whole team takes a shot. Every minute wasted = more money gone.</p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-text">
+        <strong>When a team finds the chickens:</strong>
+        <p>You win access to whatever remains of the bar tab - and you drink it with the chickens. The earlier you find them, the more you can drink.</p>
+      </div>
+    </div>
+
+    <!-- chickens marching across the bottom -->
+    <div style="display:flex; justify-content:center; gap:8px; margin-top:2rem; align-items:flex-end;">
+      <!-- small white chicken -->
+      <svg width="44" height="50" viewBox="0 0 70 80" fill="none" style="animation:bop .7s ease-in-out infinite alternate;"><ellipse cx="35" cy="52" rx="24" ry="22" fill="#fff" stroke="#d4a72a" stroke-width="2"/><circle cx="35" cy="26" r="14" fill="#fff" stroke="#d4a72a" stroke-width="2"/><path d="M29 16 C31 8 39 8 41 16" fill="#E63946"/><path d="M41 22 L50 18 L48 25 Z" fill="#F4812A"/><circle cx="40" cy="24" r="2.5" fill="#3D1F08"/><circle cx="40" cy="23" r="1" fill="#fff"/><path d="M22 60 L18 75 M48 60 L52 75" stroke="#F4812A" stroke-width="3" stroke-linecap="round"/><path d="M15 74 L21 74 L18 70Z M49 74 L55 74 L52 70Z" fill="#F4812A"/></svg>
+      <!-- small orange chicken -->
+      <svg width="56" height="64" viewBox="0 0 90 100" fill="none" style="animation:bop .8s ease-in-out infinite alternate; animation-delay:.2s;"><ellipse cx="45" cy="65" rx="30" ry="28" fill="#F4812A"/><circle cx="45" cy="32" r="18" fill="#F4812A"/><path d="M36 18 C39 6 51 6 54 18" fill="#E63946"/><path d="M54 27 L68 21 L65 31 Z" fill="#F9C74F"/><circle cx="39" cy="29" r="3.2" fill="#3D1F08"/><circle cx="39" cy="27.5" r="1.2" fill="#fff"/><path d="M28 76 L22 96 M62 76 L68 96" stroke="#F4812A" stroke-width="4" stroke-linecap="round"/><path d="M18 95 L26 95 L22 89Z M64 95 L72 95 L68 89Z" fill="#F9C74F"/></svg>
+      <!-- small brown chicken -->
+      <svg width="44" height="50" viewBox="0 0 70 80" fill="none" style="animation:bop .75s ease-in-out infinite alternate; animation-delay:.35s;"><ellipse cx="35" cy="52" rx="24" ry="22" fill="#8B3A0F"/><circle cx="35" cy="26" r="14" fill="#8B3A0F"/><path d="M29 16 C31 8 39 8 41 16" fill="#E63946"/><path d="M41 22 L50 18 L48 25 Z" fill="#F9C74F"/><circle cx="30" cy="24" r="2.5" fill="#fff"/><circle cx="30" cy="23" r="1" fill="#3D1F08"/><path d="M22 60 L18 75 M48 60 L52 75" stroke="#F9C74F" stroke-width="3" stroke-linecap="round"/><path d="M15 74 L21 74 L18 70Z M49 74 L55 74 L52 70Z" fill="#F9C74F"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ RULES ═══════════════ -->
+<section class="rules-section" style="padding-top: 5rem;">
+  <div class="rules-inner">
+    <div class="rules-title reveal"><span class="stamp-title">The Rules</span></div>
+
+    <div class="rule-row reveal">
+      <span class="rule-icon">🐔</span>
+      <div><strong>Chickens move freely</strong> They stay in one bar — but you don't know which one.</div>
+    </div>
+    <div class="rule-row reveal">
+      <span class="rule-icon">🍻</span>
+      <div><strong>Wrong bar = team shot</strong> No mercy. Drink up and keep hunting.</div>
+    </div>
+    <div class="rule-row reveal">
+      <span class="rule-icon">⏱️</span>
+      <div><strong>Every minute = money evaporating</strong> The chickens drink relentlessly.</div>
+    </div>
+    <div class="rule-row reveal">
+      <span class="rule-icon">🏆</span>
+      <div><strong>Find them, drink with them</strong> Whatever's left on the tab — yours.</div>
+    </div>
+    <div class="rule-row reveal">
+      <span class="rule-icon">📱</span>
+      <div><strong>Be ready from 6 PM</strong> Make sure to eat enough before!</div>
+    </div>
+
+    <!-- running chickens chase track -->
+    <div class="chase-track" style="position:relative; overflow:hidden; height:64px; margin-top:2rem;">
+      <!-- white fleeing left-to-right first -->
+      <div style="position:absolute; bottom:0; animation: runAcross 4s linear infinite; animation-delay:0s;">
+        <svg width="44" height="50" viewBox="0 0 70 80" fill="none"><ellipse cx="35" cy="52" rx="24" ry="22" fill="#fff" stroke="#d4a72a" stroke-width="2"/><circle cx="35" cy="26" r="14" fill="#fff" stroke="#d4a72a" stroke-width="2"/><path d="M29 16 C31 8 39 8 41 16" fill="#E63946"/><path d="M29 22 L20 18 L22 25 Z" fill="#F4812A"/><circle cx="30" cy="24" r="2.5" fill="#3D1F08"/><circle cx="30" cy="23" r="1" fill="#fff"/><path d="M20 68 L14 80 M46 70 L52 78" stroke="#F4812A" stroke-width="3.5" stroke-linecap="round"/><path d="M10 80 L17 80 L14 74Z M49 78 L56 78 L52 72Z" fill="#F4812A"/><path d="M55 52 C63 46 60 36 53 40 C57 46 51 53 43 49" fill="#fff" stroke="#d4a72a" stroke-width="1.5"/></svg>
+      </div>
+      <!-- yellow chasing, slightly behind -->
+      <div style="position:absolute; bottom:0; animation: runAcross 4s linear infinite; animation-delay:.6s;">
+        <svg width="44" height="50" viewBox="0 0 70 80" fill="none"><ellipse cx="35" cy="52" rx="24" ry="22" fill="#F9C74F"/><circle cx="35" cy="26" r="14" fill="#F9C74F"/><path d="M29 16 C31 8 39 8 41 16" fill="#E63946"/><path d="M29 22 L20 18 L22 25 Z" fill="#F4812A"/><circle cx="30" cy="24" r="2.5" fill="#3D1F08"/><circle cx="30" cy="23" r="1" fill="#fff"/><path d="M20 68 L14 80 M46 70 L52 78" stroke="#F4812A" stroke-width="3.5" stroke-linecap="round"/><path d="M10 80 L17 80 L14 74Z M49 78 L56 78 L52 72Z" fill="#F4812A"/><path d="M55 52 C63 46 60 36 53 40 C57 46 51 53 43 49" fill="#F9C74F" stroke="#d4a72a" stroke-width="1.5"/></svg>
+      </div>
+      <!-- brown chasing last, fastest -->
+      <div style="position:absolute; bottom:0; animation: runAcross 3.2s linear infinite; animation-delay:1.1s;">
+        <svg width="50" height="56" viewBox="0 0 70 80" fill="none"><ellipse cx="35" cy="52" rx="24" ry="22" fill="#8B3A0F"/><circle cx="35" cy="26" r="14" fill="#8B3A0F"/><path d="M29 16 C31 8 39 8 41 16" fill="#E63946"/><path d="M29 22 L20 18 L22 25 Z" fill="#F9C74F"/><circle cx="30" cy="24" r="2.5" fill="#fff"/><circle cx="30" cy="23" r="1" fill="#3D1F08"/><path d="M20 68 L14 80 M46 70 L52 78" stroke="#F9C74F" stroke-width="3.5" stroke-linecap="round"/><path d="M10 80 L17 80 L14 74Z M49 78 L56 78 L52 72Z" fill="#F9C74F"/><path d="M55 52 C63 46 60 36 53 40 C57 46 51 53 43 49" fill="#8B3A0F" stroke="#5a2508" stroke-width="1.5"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<section class="cta-section">
+  <div class="cta-inner">
+
+    <!-- running chicken -->
+    <svg class="cta-chicken reveal" width="100" height="110" viewBox="0 0 100 110" fill="none">
+      <ellipse cx="50" cy="72" rx="34" ry="30" fill="#F9C74F"/>
+      <circle cx="50" cy="36" r="20" fill="#F9C74F"/>
+      <path d="M41 22 C44 8 56 8 59 22" fill="#E63946"/>
+      <path d="M59 31 L76 24 L73 35 Z" fill="#F4812A"/>
+      <circle cx="43" cy="32" r="3.5" fill="#3D1F08"/>
+      <circle cx="43" cy="30.5" r="1.4" fill="#fff"/>
+      <path d="M32 85 L26 106 M68 85 L74 106" stroke="#F4812A" stroke-width="4.5" stroke-linecap="round"/>
+      <path d="M22 104 L30 104 L26 97Z M70 104 L78 104 L74 97Z" fill="#F4812A"/>
+      <path d="M20 68 C6 60 10 44 20 49 C14 59 24 68 34 63" fill="#F9C74F" stroke="#d4a72a" stroke-width="1.2"/>
+      <!-- money bag -->
+      <ellipse cx="80" cy="55" rx="9" ry="10" fill="#F9C74F" stroke="#d4a72a" stroke-width="1.5"/>
+      <text x="76" y="59" font-size="10" fill="#3D1F08" font-family="Nunito" font-weight="800">£</text>
+    </svg>
+
+    <div class="cta-title reveal">Ready to play?</div>
+    <p class="cta-sub reveal">Pay <strong>£12</strong> before <strong>May 3rd</strong> to secure your spot. Once you've paid, unlock the calendar invite below.</p>
+
+    <!-- Pay button always visible -->
+    <a href="https://revolut.me/amelie4p4d/pocket/GV9iob0WzV" target="_blank" rel="noopener" class="btn btn-pay" id="payBtn" onclick="handlePay()">
+      💸 Pay £12 via Revolut
+    </a>
+    <button class="btn btn-paid" id="paidBtn" onclick="confirmPaid()" style="display:none;">
+      ✅ I've paid — unlock my spot!
+    </button>
+
+    <!-- Calendar unlocks after paid -->
+    <a href="#" class="btn btn-cal cal-hidden" id="calBtn" target="_blank" rel="noopener">
+      📅 Add to Calendar
+    </a>
+
+    <p id="confirmedMsg" style="display:none; margin-top:1.2rem; font-weight:700; font-size:1.1rem; color:var(--green);">
+      🎉 You're in! See you May 7th — be ready from 6 PM. <em>DAS CHICKEN IST LOS.</em>
+    </p>
+
+  </div>
+</section>
+
+<footer>
+  <strong>CHICKEN RUN · Cambridge · May 7th, 2026</strong><br>
+  Deadline to pay: May 3rd · Questions? Ask a chicken.
+</footer>
+
+<script>
+  // ── Countdown to May 3rd 2026 ──
+  function updateCountdown() {
+    const deadline = new Date('2026-05-03T23:59:59');
+    const now = new Date();
+    const diff = deadline - now;
+    const el = document.getElementById('countdown');
+    const expired = document.getElementById('cd-expired');
+    if (diff <= 0) {
+      el.style.display = 'none';
+      expired.style.display = 'block';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    el.innerHTML = [['d', d], ['h', h], ['m', m], ['s', s]].map(([l, v]) =>
+      `<div class="cd-box"><span class="cd-num">${String(v).padStart(2,'0')}</span><span class="cd-label">${l}</span></div>`
+    ).join('');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ── Feathers ──
+  const featherEmojis = ['🪶','🪶','🪶','🪶','🪶'];
+  const fBg = document.getElementById('feathers');
+  for (let i = 0; i < 40; i++) {
+    const f = document.createElement('span');
+    f.className = 'feather';
+    f.textContent = featherEmojis[Math.floor(Math.random() * featherEmojis.length)];
+    f.style.left = Math.random() * 100 + 'vw';
+    f.style.fontSize = (1.4 + Math.random() * 1.8) + 'rem';
+    f.style.animationDuration = (5 + Math.random() * 8) + 's';
+    f.style.animationDelay = (Math.random() * 10) + 's';
+    f.style.opacity = .15 + Math.random() * .2;
+    fBg.appendChild(f);
+  }
+
+  // ── Scroll reveals ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal, .step-card').forEach(el => observer.observe(el));
+
+  // ── Payment flow ──
+  // Check if already paid
+  if (localStorage.getItem('chickenrun_paid')) {
+    unlockSpot();
+  }
+
+  function handlePay() {
+    // Show the "I've paid" button after clicking Revolut link
+    setTimeout(() => {
+      document.getElementById('paidBtn').style.display = 'block';
+    }, 1500);
+  }
+
+  function confirmPaid() {
+    localStorage.setItem('chickenrun_paid', '1');
+    unlockSpot();
+  }
+
+  function unlockSpot() {
+    document.getElementById('paidBtn').style.display = 'none';
+    document.getElementById('confirmedMsg').style.display = 'block';
+
+    // Set calendar URL
+    const calUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+      '&text=CHICKEN+RUN+%F0%9F%90%94+Cambridge' +
+      '&dates=20260507T163000Z/20260507T230000Z' +
+      '&details=The+chickens+are+loose.+Find+them+before+they+drink+all+your+money.' +
+      '+Be+ready+from+5:30+PM.+You%27ll+get+the+message+%E2%80%94+DAS+CHICKEN+IST+LOS.' +
+      '&location=Cambridge%2C+UK';
+    const calBtn = document.getElementById('calBtn');
+    calBtn.href = calUrl;
+    calBtn.classList.add('shown');
+    calBtn.classList.remove('cal-hidden');
+  }
+</script>
+</body>
+</html>
